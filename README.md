@@ -9,7 +9,7 @@ A standalone dark mode toggle for any site. Include via `<script src="..."></scr
     position: 'top-right'   // default: 'bottom-right'
   };
 </script>
-<script src="path/to/universal-dark-mode.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/DaUmega/web-dark-mode-toggle@main/script.js"></script>
 ```
 
 ## Features
