@@ -1,7 +1,7 @@
 /*!
  * Standalone universal dark mode toggle that can be included via <script src="..."></script>
  * - Configure without editing this file using global vars:
- *   window.UNIVERSAL_DARK_MODE_OPTIONS = { exclude: [selectors|elements], position: "bottom-right" }
+ *   window.UNIVERSAL_DARK_MODE_OPTIONS = { exclude: ['.no-dark', 'no-dark2'], position: "bottom-right" }
  *   or legacy globals:
  *   window.UNIVERSAL_DARK_MODE_EXCLUDE = [...];
  *   window.UNIVERSAL_DARK_MODE_POSITION = "top-left";
