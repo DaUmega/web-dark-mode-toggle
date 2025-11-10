@@ -32,5 +32,8 @@ UNIVERSAL_DARK_MODE.setExclusions(v);
 UNIVERSAL_DARK_MODE.setPosition(p);
 ```
 
+## Demo
+![Demo](demo.gif)
+
 ## License
 MIT
