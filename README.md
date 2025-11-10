@@ -3,15 +3,15 @@
 A standalone dark mode toggle for any site. Include via `<script src="..."></script>` and configure with OPTIONAL globals—no edits required.
 
 ```html
-// Optional
+<!-- Optional configuration (set before including the script) -->
 <script>
   window.UNIVERSAL_DARK_MODE_OPTIONS = {
-    exclude: ['.no-dark'],  // selectors, elements, or function(el)=>boolean
+    exclude: ['.no-dark'],  // selectors, elements, or function(el) => boolean
     position: 'top-right'   // default: 'bottom-right'
   };
 </script>
 
-// Required
+<!-- Required script inclusion -->
 <script src="https://cdn.jsdelivr.net/gh/DaUmega/web-dark-mode-toggle@main/script.js"></script>
 ```
 
