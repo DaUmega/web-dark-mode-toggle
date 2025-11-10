@@ -1,6 +1,6 @@
 # Universal Dark Mode
 
-A standalone dark mode toggle for any site. Include via `<script src="..."></script>` and configure with globals—no edits required.
+A lightweight, standalone dark mode toggle for any site. Include via `<script src="..."></script>` and configure with globals—no edits required.
 
 ```html
 <!-- Optional configuration (set before including the script) -->
