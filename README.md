@@ -7,7 +7,7 @@ A standalone dark mode toggle for any site. Include via `<script src="..."></scr
 <script>
   window.UNIVERSAL_DARK_MODE_OPTIONS = {
     exclude: ['.no-dark'],  // selectors, elements, or function(el) => boolean
-    position: 'top-right'   // default: 'bottom-right', supports Supports nine positions: top/middle/bottom × left/center/right.
+    position: 'top-right'   // default: 'bottom-right', supports nine positions: top/middle/bottom × left/center/right.
   };
 </script>
 
