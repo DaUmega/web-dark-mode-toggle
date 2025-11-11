@@ -11,7 +11,7 @@
  *  "middle-left" | "middle-center" | "middle-right"
  *  "bottom-left" | "bottom-center" | "bottom-right"   (default)
  *
- * Author: (adapted)
+ * Author: DaUmega
  */
 (function _UniversalDarkMode() {
   if (window.__UNIVERSAL_DARK_MODE_LOADED__) return;
@@ -25,25 +25,17 @@
   const BODY = document.body;
   let applyTimer = 0, observer = null;
 
-  // read options from globals (user may set these before including this script)
   const userOpts = (window.UNIVERSAL_DARK_MODE_OPTIONS && typeof window.UNIVERSAL_DARK_MODE_OPTIONS === "object")
     ? window.UNIVERSAL_DARK_MODE_OPTIONS
     : {};
 
-  // legacy global support
   if (!userOpts.exclude && Array.isArray(window.UNIVERSAL_DARK_MODE_EXCLUDE)) userOpts.exclude = window.UNIVERSAL_DARK_MODE_EXCLUDE;
   if (!userOpts.position && typeof window.UNIVERSAL_DARK_MODE_POSITION === "string") userOpts.position = window.UNIVERSAL_DARK_MODE_POSITION;
 
   const DEFAULT_POSITION = "bottom-right";
   const POSITION = (userOpts.position || DEFAULT_POSITION).toLowerCase();
-
-  // Exclusions can be:
-  //  - array of CSS selectors (strings)
-  //  - array of DOM elements
-  //  - a function(el) => boolean
   const EXCLUDE = userOpts.exclude || [];
 
-  // insert stylesheet once
   if (!document.getElementById(STYLE_ID)) {
     const s = document.createElement("style");
     s.id = STYLE_ID;
@@ -52,7 +44,6 @@
       .dark-mode, .dark-mode body { background-color: var(--udm-bg) !important; color: var(--udm-text) !important; }
       .dark-mode .udm-btn { background:#2a2a2a !important; color:var(--udm-text) !important; border:1px solid rgba(200,200,200,0.45) !important; border-radius:8px !important; box-shadow:0 0 10px rgba(200,200,200,0.18) !important; }
       .dark-mode .udm-title { color:var(--udm-accent) !important; }
-      .dark-mode .udm-note { color:var(--udm-muted) !important; font-style:italic; }
       .dark-mode .udm-panel { background:var(--udm-surface) !important; color:var(--udm-text) !important; border:1px solid rgba(255,255,255,0.03) !important; box-shadow:0 6px 18px rgba(0,0,0,0.35) inset !important; }
       .udm-transition * { transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important; }
     `;
@@ -71,13 +62,11 @@
   function isExcluded(el) {
     try {
       if (!EXCLUDE || !EXCLUDE.length) return false;
-      // If user provided a function as exclude
       if (typeof EXCLUDE === "function") return !!EXCLUDE(el);
-      // If EXCLUDE is array-like
       for (let sel of EXCLUDE) {
         if (!sel) continue;
         if (typeof sel === "string") {
-          try { if (el.matches(sel)) return true; } catch(_) { /* invalid selector - skip */ }
+          try { if (el.matches(sel)) return true; } catch(_) {}
         } else if (sel instanceof Element) {
           if (el === sel || sel.contains(el)) return true;
         } else if (typeof sel === "function") {
@@ -107,7 +96,6 @@
           } else {
             const txt = (el.textContent || "").trim();
             if (/[\p{Emoji}]/u.test(txt) || fs >= 18) { added.push("udm-title"); el.classList.add("udm-title"); }
-            else if (fs <= 12 || cs.fontStyle === "italic") { added.push("udm-note"); el.classList.add("udm-note"); }
             const rgb = parseRgb(bg);
             if ((rgb && brightness(rgb) > 150) || (cs.backgroundImage && cs.backgroundImage !== "none")) {
               added.push("udm-panel"); el.classList.add("udm-panel");
@@ -115,7 +103,7 @@
           }
           if (added.length) el.dataset.udmAddedClasses = added.join(" ");
           el.dataset.udmProcessed = "1";
-        } catch (e) { /* ignore individual errors */ }
+        } catch (e) {}
       }
     }), 50);
   }
@@ -137,9 +125,7 @@
   }
 
   function buildPositionStyle(pos) {
-    // returns an object of style properties to apply to the toggle element
     const base = { position: "fixed", zIndex: 2147483647, background: "transparent", border: "2px solid rgba(200,200,200,0.22)", borderRadius: "8px", fontSize: "1.4rem", cursor: "pointer", padding: "6px", lineHeight: "1", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.18s ease,border-color 0.18s ease,opacity 0.18s ease" };
-    // defaults
     const gap = "15px";
     switch ((pos||"").toLowerCase()) {
       case "top-left": Object.assign(base, { top: gap, left: gap }); break;
@@ -179,16 +165,14 @@
       const styleObj = buildPositionStyle(POSITION);
       Object.assign(t.style, styleObj);
       t.onmouseenter = () => { t.style.transform = (t.style.transform ? t.style.transform + " scale(1.15)" : "scale(1.15)"); t.style.borderColor = "rgba(200,200,200,0.7)"; };
-      t.onmouseleave = () => { // remove scale only, keep translate if present
+      t.onmouseleave = () => {
         const tx = (styleObj.transform || "");
         t.style.transform = tx;
         t.style.borderColor = "rgba(200,200,200,0.22)";
       };
-      // small accessibility: allow keyboard toggle
       t.addEventListener("keydown", (ev) => { if (ev.key === "Enter" || ev.key === " ") { ev.preventDefault(); t.click(); }});
       document.body.appendChild(t);
     } else {
-      // update position if user changed global before load or at runtime
       Object.assign(t.style, buildPositionStyle(POSITION));
     }
     return t;
@@ -204,7 +188,7 @@
         }
       });
       observer.observe(document.body, { childList: true, subtree: true });
-    } catch (e) { /* noop */ }
+    } catch (e) {}
   }
 
   const isEnabled = () => BODY.classList.contains("dark-mode");
@@ -231,15 +215,12 @@
 
   window.addEventListener("popstate", () => { clearTimeout(applyTimer); applyTimer = setTimeout(init, 40); });
 
-  // expose a small API for runtime control if needed
   window.UNIVERSAL_DARK_MODE = {
     enable() { if (!isEnabled()) { document.getElementById(TOGGLE_ID)?.click(); } },
     disable() { if (isEnabled()) { document.getElementById(TOGGLE_ID)?.click(); } },
     toggle() { document.getElementById(TOGGLE_ID)?.click(); },
     isEnabled,
-    // replace exclusions at runtime
     setExclusions(v) { if (Array.isArray(v) || typeof v === "function") { if (Array.isArray(v)) { userOpts.exclude = v; } else userOpts.exclude = v; } },
-    // set position at runtime (one of the supported strings)
     setPosition(p) { if (typeof p === "string") { try { userOpts.position = p; const el = document.getElementById(TOGGLE_ID); Object.assign(el.style, buildPositionStyle(p)); } catch(_) {} } }
   };
 })();
