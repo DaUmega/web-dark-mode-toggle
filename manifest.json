@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "Universal Dark Mode Toggle",
-    "version": "1.1.0",
-    "description": "Toggle Dark Mode on the active page using the universal web script by DaUmega.",
+    "version": "1.0.0",
+    "description": "Enable dark mode on any website instantly. Lightweight, dependency-free, and respects site settings.",
     "permissions": [
         "scripting",
         "activeTab",
@@ -12,12 +12,7 @@
         "service_worker": "background.js"
     },
     "action": {
-        "default_title": "Universal Dark Mode",
-        "default_icon": {
-            "16": "icons/icon16.png",
-            "48": "icons/icon48.png",
-            "128": "icons/icon128.png"
-        }
+        "default_title": "Universal Dark Mode"
     },
     "icons": {
         "16": "icons/icon16.png",
