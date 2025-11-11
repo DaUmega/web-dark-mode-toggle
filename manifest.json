@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Universal Dark Toggle",
+    "name": "Universal Dark Mode Toggle",
     "version": "1.1.0",
-    "description": "Toggle Universal Dark Mode on the active page using the universal web script.",
+    "description": "Toggle Dark Mode on the active page using the universal web script by DaUmega.",
     "permissions": [
         "scripting",
         "activeTab",
