@@ -5,8 +5,7 @@
     "description": "Enable dark mode on any website instantly. Lightweight, dependency-free, and respects site settings.",
     "permissions": [
         "scripting",
-        "activeTab",
-        "storage"
+        "activeTab"
     ],
     "background": {
         "service_worker": "background.js"
