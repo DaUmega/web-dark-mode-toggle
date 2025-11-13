@@ -22,6 +22,7 @@
   const STYLE_ID = "universal-dark-mode-sheet";
   const SESSION_INIT = "udmInitialized";
   const SESSION_USER_TOGGLED = "udmUserToggled";
+  const UDM_SUFFIX = Math.random().toString(36).slice(2,8); // e.g. 'a1b2c3', css name suffix to avoid collisions with site styles
   const BODY = document.body;
   let applyTimer = 0, observer = null;
 
@@ -45,12 +46,12 @@
     const s = document.createElement("style");
     s.id = STYLE_ID;
     s.textContent = `
-      .dark-mode { --udm-bg:#0f0f10; --udm-surface:#1e1e1e; --udm-text:#eaeaea; --udm-muted:#bdbdbd; --udm-accent:#eaeaea; }
-      .dark-mode, .dark-mode body { background-color: var(--udm-bg) !important; color: var(--udm-text) !important; }
-      .dark-mode .udm-btn { background:#2a2a2a !important; color:var(--udm-text) !important; border:1px solid rgba(200,200,200,0.45) !important; border-radius:8px !important; box-shadow:0 0 10px rgba(200,200,200,0.18) !important; }
-      .dark-mode .udm-text { color: var(--udm-text) !important; }
-      .dark-mode .udm-panel { background:var(--udm-surface) !important; color:var(--udm-text) !important; border:1px solid rgba(255,255,255,0.03) !important; box-shadow:0 6px 18px rgba(0,0,0,0.35) inset !important; }
-      .udm-transition * { transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important; }
+      .dark-mode-${UDM_SUFFIX} { --udm-bg-${UDM_SUFFIX}:#0f0f10; --udm-surface-${UDM_SUFFIX}:#1e1e1e; --udm-text-${UDM_SUFFIX}:#eaeaea; --udm-muted-${UDM_SUFFIX}:#bdbdbd; --udm-accent-${UDM_SUFFIX}:#eaeaea; }
+      .dark-mode-${UDM_SUFFIX}, .dark-mode-${UDM_SUFFIX} body { background-color: var(--udm-bg-${UDM_SUFFIX}) !important; color: var(--udm-text-${UDM_SUFFIX}) !important; }
+      .dark-mode-${UDM_SUFFIX} .udm-btn-${UDM_SUFFIX} { background:#2a2a2a !important; color:var(--udm-text-${UDM_SUFFIX}) !important; border:1px solid rgba(200,200,200,0.45) !important; border-radius:8px !important; box-shadow:0 0 10px rgba(200,200,200,0.18) !important; }
+      .dark-mode-${UDM_SUFFIX} .udm-text-${UDM_SUFFIX} { color: var(--udm-text-${UDM_SUFFIX}) !important; }
+      .dark-mode-${UDM_SUFFIX} .udm-panel-${UDM_SUFFIX} { background:var(--udm-surface-${UDM_SUFFIX}) !important; color:var(--udm-text-${UDM_SUFFIX}) !important; border:1px solid rgba(255,255,255,0.03) !important; box-shadow:0 6px 18px rgba(0,0,0,0.35) inset !important; }
+      .udm-transition-${UDM_SUFFIX} * { transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease !important; }
     `;
     document.head.appendChild(s);
   }
@@ -99,16 +100,16 @@
           const added = [];
           if (el.tagName === "BUTTON" || el.getAttribute("role") === "button" ||
               (el.tagName === "INPUT" && ["button","submit","reset"].includes((el.type||"").toLowerCase()))) {
-            added.push("udm-btn"); el.classList.add("udm-btn");
+            added.push(`udm-btn-${UDM_SUFFIX}`); el.classList.add(`udm-btn-${UDM_SUFFIX}`);
           } else {
             const txt = (el.textContent || "").trim();
             if (txt) {
-              added.push("udm-text"); 
-              el.classList.add("udm-text");
+              added.push(`udm-text-${UDM_SUFFIX}`); 
+              el.classList.add(`udm-text-${UDM_SUFFIX}`);
             }
             const rgb = parseRgb(bg);
             if ((rgb && brightness(rgb) > 150) || (cs.backgroundImage && cs.backgroundImage !== "none")) {
-              added.push("udm-panel"); el.classList.add("udm-panel");
+              added.push(`udm-panel-${UDM_SUFFIX}`); el.classList.add(`udm-panel-${UDM_SUFFIX}`);
             }
           }
           if (added.length) el.dataset.udmAddedClasses = added.join(" ");
@@ -131,12 +132,12 @@
         delete el.dataset.udmProcessed; delete el.dataset.udmOriginalStyle; delete el.dataset.udmAddedClasses;
       } catch (e) {}
     }
-    BODY.classList.remove("dark-mode");
+    BODY.classList.remove(`dark-mode-${UDM_SUFFIX}`);
   }
 
   function buildPositionStyle(pos) {
     // returns an object of style properties to apply to the toggle element
-    const base = { position: "fixed", zIndex: 2147483647, background: "transparent", border: "2px solid rgba(200,200,200,0.22)", borderRadius: "8px", fontSize: "1.4rem", cursor: "pointer", padding: "6px", lineHeight: "1", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.18s ease,border-color 0.18s ease,opacity 0.18s ease" };
+    const base = { position: "fixed", maxWidth: "35px", zIndex: 2147483647, background: "transparent", border: "2px solid rgba(200,200,200,0.22)", borderRadius: "8px", fontSize: "1.4rem", cursor: "pointer", padding: "6px", lineHeight: "1", display: "flex", alignItems: "center", justifyContent: "center", transition: "transform 0.18s ease,border-color 0.18s ease,opacity 0.18s ease" };
     // defaults
     const gap = "15px";
     switch ((pos||"").toLowerCase()) {
@@ -162,15 +163,15 @@
         ariaLabel: "Toggle dark mode",
         textContent: "🌙",
         onclick() {
-          const enabled = BODY.classList.toggle("dark-mode");
+          const enabled = BODY.classList.toggle(`dark-mode-${UDM_SUFFIX}`);
           this.textContent = enabled ? "☀️" : "🌙";
           sessionStorage.setItem(SESSION_USER_TOGGLED, "1");
           localStorage.setItem(STORAGE_KEY, enabled ? "true" : "false");
           if (enabled) {
-            BODY.classList.add("udm-transition");
+            BODY.classList.add(`udm-transition-${UDM_SUFFIX}`);
             applyDark();
             startObserver();
-            setTimeout(() => BODY.classList.remove("udm-transition"), 260);
+            setTimeout(() => BODY.classList.remove(`udm-transition-${UDM_SUFFIX}`), 260);
           } else restoreStyles();
         }
       });
@@ -205,7 +206,7 @@
     } catch (e) { /* noop */ }
   }
 
-  const isEnabled = () => BODY.classList.contains("dark-mode");
+  const isEnabled = () => BODY.classList.contains(`dark-mode-${UDM_SUFFIX}`);
 
   function init() {
     const toggle = ensureToggle();
@@ -218,7 +219,7 @@
     }
     const userToggled = sessionStorage.getItem(SESSION_USER_TOGGLED);
     if (userToggled === "1" || saved === "true") {
-      BODY.classList.toggle("dark-mode", saved === "true");
+      BODY.classList.toggle(`dark-mode-${UDM_SUFFIX}`, saved === "true");
       toggle.textContent = saved === "true" ? "☀️" : "🌙";
       if (saved === "true") { applyDark(); startObserver(); }
     } else toggle.textContent = "🌙";
