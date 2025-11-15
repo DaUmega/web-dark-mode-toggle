@@ -1,13 +1,39 @@
-# Universal Dark Mode
+# Universal Dark Mode Toggle
 
-A lightweight, standalone dark mode toggle for any site. Include via `<script src="..."></script>` and configure with globals—no edits required.
+A lightweight, standalone **dark mode toggle** for *any* website.  
+Use it as:
+
+- ✔️ a **Chrome Extension** (recommended for personal browsing)  
+- ✔️ a **drop-in `<script>` snippet** for your own sites  
+
+No dependencies. No external frameworks. Works everywhere.
+
+---
+
+## 🚀 Chrome Extension (Now Available!)
+
+If you just want dark mode on every site you visit, install the published extension:
+
+👉 **[Universal Dark Mode Toggle – Chrome Web Store](https://chrome.google.com/webstore/detail/ipoommhlcieajoipnlohbgemhpnemfcd)**  
+*(Replace with actual link)*
+
+- Instant universal dark mode  
+- Works on most websites automatically  
+- Toggle directly from Chrome toolbar  
+- Lightweight & privacy-friendly (no data collection)
+
+---
+
+## 📦 Script Version (For Websites)
+
+Include directly in your page:
 
 ```html
 <!-- Optional configuration (set before including the script) -->
 <script>
   window.UNIVERSAL_DARK_MODE_OPTIONS = {
     exclude: ['.no-dark', 'no-dark2'],  // selectors, elements, or function(el) => boolean
-    position: 'top-right'   // default: 'bottom-right', supported positions: top/middle/bottom - left/center/right.
+    position: 'top-right'               // default: 'bottom-right'
   };
 </script>
 
@@ -16,10 +42,11 @@ A lightweight, standalone dark mode toggle for any site. Include via `<script sr
 ```
 
 ## Features
-- Zero dependencies, single file.  
+- Zero dependencies, single lightweight JS file.  
+- Runtime toggle with persistent `localStorage` state.
 - Exclude elements by selector, element, or function.  
 - Toggle button in 9 positions.  
-- Saves preference in `localStorage`.  
+- Randomized CSS variable suffixes to avoid naming collisions.
 - Lightweight CSS with safe DOM handling.  
 
 ## Runtime API
