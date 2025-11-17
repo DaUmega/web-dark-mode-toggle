@@ -87,9 +87,7 @@
         color: rgba(255,255,255,0.45) !important;
       }`,
 
-      // Keep images/videos/canvas dimmed but allow exceptions
       `.udm-dim { filter: brightness(0.85) contrast(0.95) !important; background-color: transparent !important; }`,
-
       `.udm-exclude, [data-udm-exclude] { all: initial !important; }`
     ]);
 
@@ -118,14 +116,6 @@
   function disableDark() { HTML.classList.remove(rootClassName); }
   function isEnabled() { return HTML.classList.contains(rootClassName); }
 
-  // Decide if this element should be dimmed
-  function shouldDim(el) {
-    // Facebook post thumbnail wrapper
-    if (el.closest('.x1fmog5m')) return false;
-    // Add other site-specific exceptions here
-    return true;
-  }
-
   const SPAObserver = new MutationObserver((muts) => {
     for (const m of muts) {
       if (m.removedNodes) {
@@ -139,7 +129,7 @@
           applyExclusionsToNode(n);
           if (isEnabled()) {
             n.querySelectorAll?.("img,video,picture,canvas,[style*='background']").forEach(x => {
-              if (shouldDim(x)) x.classList.add("udm-dim");
+              x.classList.add("udm-dim"); // dim all elements unconditionally
             });
           }
         }
