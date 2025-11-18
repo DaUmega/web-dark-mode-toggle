@@ -35,9 +35,9 @@
   const DEFAULT_THEME = {
     bg: '#0f0f10',
     surface: '#1e1e1e',
-    text: '#eaeaea',
-    muted: '#bdbdbd',
-    accent: '#6EA8FE'
+    text: '#dcdcdc',
+    muted: '#9c9c9c',
+    accent: '#8d99a5'
   };
   const THEME = Object.assign({}, DEFAULT_THEME, window.UNIVERSAL_DARK_MODE_THEME || {});
 
