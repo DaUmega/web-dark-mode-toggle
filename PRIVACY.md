@@ -17,6 +17,7 @@ Universal Dark Toggle is a lightweight browser extension that enables or disable
 This extension uses the following Chrome permissions:
 - `tabs` — to inject the dark-mode script into the all tabs when toggled using content.js.  
 - `storage` — to make dark-mode toggle persistent using `chrome.storage.local`, ensuring it applies to new tabs.  
+- `host permission` — to inject the dark mode script into websites upon page load, so that dark mode toggle auto-applies to new tabs and pages.  
 
 Note: These permissions are used solely to activate and synchronize dark mode.  
 No data leaves your device.
