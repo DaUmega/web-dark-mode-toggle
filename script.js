@@ -88,8 +88,8 @@
       }`,
 
       `html.${rootClass} ${notExcluded} button {
-        box-shadow: 0 1px 4px rgba(255,255,255,0.08) !important;
-        border: 1px solid rgba(255,255,255,0.10) !important;
+        box-shadow: 0 1px 4px rgba(255,255,255,0.1) !important;
+        border: 2px solid rgba(255,255,255,0.15) !important;
       }`,
 
       `.udm-dim { filter: brightness(0.85) contrast(0.95) !important; background-color: transparent !important; }`,
