@@ -1,6 +1,6 @@
 # Privacy Policy for Universal Dark Toggle
 
-**Effective date:** 2025-11-11
+**Effective date:** 2025-11-19
 **Extension name:** Universal Dark Mode Toggle  
 **Developer:** Tony Dong  
 
@@ -15,11 +15,11 @@ Universal Dark Toggle is a lightweight browser extension that enables or disable
 
 ## Permissions
 This extension uses the following Chrome permissions:
-- `activeTab` — to inject the dark-mode script into the current page when toggled.  
 - `scripting` — to safely apply or remove dark mode styles.  
+- `tabs` — to inject the dark-mode script into the all tabs when toggled.  
+- `storage` — to make dark-mode toggle persistent using `chrome.storage.local`, ensuring it applies to new tabs.  
 
-Note: The extension uses standard web localStorage to remember your dark-mode preference locally.
-This is handled entirely by your browser and does not require the Chrome storage permission.
+Note: These permissions are used solely to activate and synchronize dark mode.  
 No data leaves your device.
 
 ## Third Parties

@@ -6,7 +6,7 @@ Use it as:
 - ✔️ a **Chrome Extension** (recommended for personal browsing)  
 - ✔️ a **drop-in `<script>` snippet** for your own sites  
 
-No dependencies. No external frameworks. Works everywhere.
+No dependencies. No external frameworks. Works almost everywhere.
 
 ---
 
@@ -15,7 +15,6 @@ No dependencies. No external frameworks. Works everywhere.
 If you just want dark mode on every site you visit, install the published extension:
 
 👉 **[Universal Dark Mode Toggle – Chrome Web Store](https://chrome.google.com/webstore/detail/ipoommhlcieajoipnlohbgemhpnemfcd)**  
-*(Replace with actual link)*
 
 - Instant universal dark mode  
 - Works on most websites automatically  
@@ -29,13 +28,8 @@ If you just want dark mode on every site you visit, install the published extens
 Include directly in your page:
 
 ```html
-<!-- Optional configuration (set before including the script) -->
-<script>
-  window.UNIVERSAL_DARK_MODE_OPTIONS = {
-    exclude: ['.no-dark', 'no-dark2'],  // selectors, elements, or function(el) => boolean
-    position: 'top-right'               // default: 'bottom-right'
-  };
-</script>
+<!-- Optional configuration (position default: bottom-right) -->
+<script>window.UNIVERSAL_DARK_MODE_OPTIONS = { position: 'top-right' };</script>
 
 <!-- Required script inclusion -->
 <script src="https://cdn.jsdelivr.net/gh/DaUmega/web-dark-mode-toggle@main/script.js"></script>
@@ -44,7 +38,6 @@ Include directly in your page:
 ## Features
 - Zero dependencies, single lightweight JS file.  
 - Runtime toggle with persistent `localStorage` state.
-- Exclude elements by selector, element, or function.  
 - Toggle button in 9 positions.  
 - Randomized CSS variable suffixes to avoid naming collisions.
 - Lightweight CSS with safe DOM handling.  
@@ -55,7 +48,6 @@ UNIVERSAL_DARK_MODE.enable();
 UNIVERSAL_DARK_MODE.disable();
 UNIVERSAL_DARK_MODE.toggle();
 UNIVERSAL_DARK_MODE.isEnabled();
-UNIVERSAL_DARK_MODE.setExclusions(v);
 UNIVERSAL_DARK_MODE.setPosition(p);
 ```
 
