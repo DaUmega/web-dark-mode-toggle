@@ -87,6 +87,11 @@
         color: rgba(255,255,255,0.45) !important;
       }`,
 
+      `html.${rootClass} ${notExcluded} button {
+        box-shadow: 0 1px 4px rgba(255,255,255,0.08) !important;
+        border: 1px solid rgba(255,255,255,0.10) !important;
+      }`,
+
       `.udm-dim { filter: brightness(0.85) contrast(0.95) !important; background-color: transparent !important; }`,
       `.udm-exclude, [data-udm-exclude] { all: initial !important; }`
     ]);
@@ -127,11 +132,6 @@
         for (const n of m.addedNodes) {
           if (!(n instanceof Element)) continue;
           applyExclusionsToNode(n);
-          if (isEnabled()) {
-            n.querySelectorAll?.("img,video,picture,canvas,[style*='background']").forEach(x => {
-              x.classList.add("udm-dim"); // dim all elements unconditionally
-            });
-          }
         }
       }
     }
@@ -197,4 +197,14 @@
     isEnabled,
     setExclusions(v){ userOpts.exclude = v }
   };
+
+  window.addEventListener("message", (e) => {
+    if (e.data?.udmApply !== undefined) {
+      const enabled = e.data.udmApply;
+      if (enabled) window.UNIVERSAL_DARK_MODE.enable();
+      else window.UNIVERSAL_DARK_MODE.disable();
+      const tog = document.getElementById("universal-dark-mode-toggle");
+      if (tog) tog.style.display = "none";
+    }
+  });
 })();
