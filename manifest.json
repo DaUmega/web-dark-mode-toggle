@@ -1,11 +1,12 @@
 {
   "manifest_version": 3,
   "name": "Universal Dark Mode Toggle",
-  "version": "1.0.0",
-  "description": "Enable dark mode on any website instantly. Lightweight, dependency-free, and respects site settings.",
+  "version": "1.0.1",
+  "description": "Enable dark mode on most website instantly. Lightweight, dependency-free, and forever FREE!",
   "permissions": [
     "scripting",
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "host_permissions": [
     "<all_urls>"

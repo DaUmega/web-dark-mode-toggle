@@ -1,9 +1,6 @@
 /*!
  * Standalone universal dark mode toggle that can be included via <script src="..."></script>
  * - Configure without editing this file using global vars:
- *   window.UNIVERSAL_DARK_MODE_OPTIONS = { exclude: ['.no-dark', 'no-dark2'], position: "bottom-right" }
- *   or legacy globals:
- *   window.UNIVERSAL_DARK_MODE_EXCLUDE = [...];
  *   window.UNIVERSAL_DARK_MODE_POSITION = "top-left";
  *
  * Position values supported:
@@ -30,7 +27,6 @@
 
   const DEFAULT_POSITION = 'bottom-right';
   const POSITION = (userOpts.position || DEFAULT_POSITION).toLowerCase();
-  const EXCLUDE = userOpts.exclude || [];
 
   const DEFAULT_THEME = {
     bg: '#0f0f10',
@@ -48,7 +44,6 @@
     s.id = STYLE_ID;
 
     const rootClass = `udm-dark-${UDM_SUFFIX}`;
-    const notExcluded = `:not(.udm-exclude):not([data-udm-exclude])`;
 
     s.textContent = css([
       `html.${rootClass} {
@@ -60,8 +55,8 @@
         color-scheme: dark !important;
       }`,
 
-      `html.${rootClass} ${notExcluded},
-       html.${rootClass} ${notExcluded} * {
+      `html.${rootClass},
+       html.${rootClass} * {
         background-color: var(--udm-bg) !important;
         color: var(--udm-text) !important;
         border-color: rgba(255,255,255,0.06) !important;
@@ -69,56 +64,38 @@
         box-shadow: none !important;
       }`,
 
-      `html.${rootClass} ${notExcluded} [style*="background"] {
+      `html.${rootClass} [style*="background"] {
         filter: brightness(0.85) contrast(0.95) !important;
       }`,
 
-      `html.${rootClass} ${notExcluded} a,
-       html.${rootClass} ${notExcluded} a * {
+      `html.${rootClass} a,
+       html.${rootClass} a * {
         color: var(--udm-accent) !important;
       }`,
 
-      `html.${rootClass} ${notExcluded} svg {
+      `html.${rootClass} svg {
         fill: currentColor !important;
         stroke: currentColor !important;
       }`,
 
-      `html.${rootClass} ${notExcluded} ::placeholder {
+      `html.${rootClass} ::placeholder {
         color: rgba(255,255,255,0.45) !important;
       }`,
 
-      `html.${rootClass} ${notExcluded} button {
+      `html.${rootClass} button {
         box-shadow: 0 1px 4px rgba(255,255,255,0.1) !important;
         border: 2px solid rgba(255,255,255,0.15) !important;
       }`,
 
-      `.udm-dim { filter: brightness(0.85) contrast(0.95) !important; background-color: transparent !important; }`,
-      `.udm-exclude, [data-udm-exclude] { all: initial !important; }`
+      `.udm-dim { filter: brightness(0.85) contrast(0.95) !important; background-color: transparent !important; }`
     ]);
 
     document.head.appendChild(s);
   }
 
-  function markNodeExcluded(el) { try { el.classList.add("udm-exclude"); } catch(_){} }
-
-  function applyExclusionsToNode(el) {
-    if (!EXCLUDE) return;
-    if (typeof EXCLUDE === "function") {
-      if (EXCLUDE(el)) markNodeExcluded(el);
-    } else if (Array.isArray(EXCLUDE)) {
-      for (const rule of EXCLUDE) {
-        try {
-          if (typeof rule === "string" && el.matches(rule)) markNodeExcluded(el);
-          else if (rule instanceof Element && el === rule) markNodeExcluded(el);
-          else if (typeof rule === "function" && rule(el)) markNodeExcluded(el);
-        } catch(_) {}
-      }
-    }
-  }
-
   const rootClassName = `udm-dark-${UDM_SUFFIX}`;
-  function enableDark() { HTML.classList.add(rootClassName); }
-  function disableDark() { HTML.classList.remove(rootClassName); }
+  function enableDark() { HTML.classList.add(rootClassName); localStorage.setItem(STORAGE_KEY, "true"); }
+  function disableDark() { HTML.classList.remove(rootClassName); localStorage.setItem(STORAGE_KEY, "false"); }
   function isEnabled() { return HTML.classList.contains(rootClassName); }
 
   const SPAObserver = new MutationObserver((muts) => {
@@ -126,12 +103,6 @@
       if (m.removedNodes) {
         for (const n of m.removedNodes) {
           if (n.id === STYLE_ID) document.head.appendChild(n);
-        }
-      }
-      if (m.addedNodes) {
-        for (const n of m.addedNodes) {
-          if (!(n instanceof Element)) continue;
-          applyExclusionsToNode(n);
         }
       }
     }
@@ -194,8 +165,7 @@
     enable: enableDark,
     disable: disableDark,
     toggle() { document.getElementById(TOGGLE_ID)?.click() },
-    isEnabled,
-    setExclusions(v){ userOpts.exclude = v }
+    isEnabled
   };
 
   window.addEventListener("message", (e) => {
